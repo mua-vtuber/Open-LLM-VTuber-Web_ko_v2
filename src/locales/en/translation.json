@@ -1,0 +1,206 @@
+{
+  "app": {
+    "name": "Open-LLM-VTuber",
+    "version": "v2.0"
+  },
+  "modes": {
+    "studio": "Studio",
+    "studioDesc": "Full UI for setup and testing",
+    "live": "Live",
+    "liveDesc": "Minimal UI optimized for OBS capture",
+    "companion": "Companion",
+    "companionDesc": "Desktop pet style floating window",
+    "companionActive": "Companion mode is active. Drag the floating window to move."
+  },
+  "status": {
+    "idle": "Idle",
+    "listening": "Listening...",
+    "thinking": "Thinking...",
+    "speaking": "Speaking..."
+  },
+  "controls": {
+    "microphone": "Microphone",
+    "stop": "Stop",
+    "volume": "Volume",
+    "send": "Send",
+    "settings": "Settings",
+    "quickReaction": "Quick Reaction"
+  },
+  "tools": {
+    "chat": "Chat",
+    "camera": "Camera",
+    "screen": "Screen",
+    "live": "Live",
+    "settings": "Settings",
+    "chatPlaceholder": "Chat history will appear here",
+    "cameraPlaceholder": "Connect your camera",
+    "screenPlaceholder": "Start screen sharing",
+    "livePlaceholder": "Configure live streaming settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "search": "Search settings...",
+    "profile": {
+      "title": "Profile",
+      "description": "Manage profiles, import/export"
+    },
+    "character": {
+      "title": "Character",
+      "description": "Model, expressions, motion, background",
+      "model": "Model",
+      "selectModel": "Select Model",
+      "modelUrl": "Model URL (Direct Input)",
+      "addModelFolder": "Add Model Folder",
+      "externalFolders": "External Model Folders",
+      "external": "External",
+      "loading": "Loading...",
+      "noModelsFound": "No models found",
+      "uploadModel": "Upload Model",
+      "transform": "Position/Scale",
+      "scale": "Scale",
+      "position": "Position",
+      "verticalPosition": "Vertical Position",
+      "verticalPositionDesc": "Adjust vertical position of the character",
+      "animation": "Animation",
+      "lipSync": "Lip Sync",
+      "lipSyncDesc": "Synchronize mouth movements with voice",
+      "eyeBlink": "Eye Blink",
+      "eyeBlinkDesc": "Enable automatic eye blinking",
+      "autoBreathing": "Auto Breathing",
+      "autoBreathingDesc": "Natural breathing animation",
+      "idleMotion": "Idle Motion",
+      "idleMotionDesc": "Natural movements when idle",
+      "movement": "Character Movement",
+      "movementMode": "Movement Mode",
+      "movementModeDesc": "How the character moves automatically on screen",
+      "movementModes": {
+        "disabled": "Disabled",
+        "free": "Free Movement",
+        "horizontal": "Horizontal Only",
+        "vertical": "Vertical Only"
+      },
+      "movementSpeed": "Movement Speed",
+      "movementSpeedDesc": "Character movement speed (higher = faster)",
+      "movementActiveness": "Activeness",
+      "movementActivenessDesc": "Lower = more resting, Higher = more active",
+      "seconds": "s"
+    },
+    "voice": {
+      "title": "Voice",
+      "description": "Input, output",
+      "input": {
+        "title": "Voice Input",
+        "enabled": "Enable speech recognition",
+        "sensitivity": "Sensitivity",
+        "vad": "Voice Activity Detection (VAD)"
+      },
+      "output": {
+        "title": "Voice Output",
+        "engine": "TTS Engine",
+        "voice": "Voice",
+        "speed": "Speed",
+        "pitch": "Pitch"
+      }
+    },
+    "ai": {
+      "title": "AI",
+      "description": "Personality, memory, response rules",
+      "personality": "Personality",
+      "systemPrompt": "System Prompt",
+      "memory": "Memory",
+      "temperature": "Creativity (Temperature)"
+    },
+    "broadcast": {
+      "title": "Broadcast",
+      "description": "Platform connection, chat filter, priority",
+      "platforms": {
+        "title": "Platform Connection",
+        "youtube": "YouTube",
+        "chzzk": "Chzzk",
+        "discord": "Discord"
+      },
+      "chatFilter": {
+        "title": "Chat Filter",
+        "enabled": "Enable filter",
+        "blockedWords": "Blocked words"
+      },
+      "priority": {
+        "title": "Priority Rules"
+      }
+    },
+    "system": {
+      "title": "System",
+      "description": "Connection, language, theme, shortcuts",
+      "language": "Language",
+      "theme": "Theme",
+      "shortcuts": "Shortcuts",
+      "developer": "Developer Mode"
+    },
+    "save": "Save",
+    "cancel": "Cancel",
+    "reset": "Reset"
+  },
+  "connection": {
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "connecting": "Connecting...",
+    "error": "Connection Error"
+  },
+  "chat": {
+    "toggle": "Toggle Chat",
+    "title": "Chat"
+  },
+  "mic": {
+    "enable": "Enable Microphone",
+    "disable": "Disable Microphone"
+  },
+  "messages": {
+    "placeholder": "Type a message...",
+    "empty": "Start a conversation!"
+  },
+  "errors": {
+    "generic": "An error occurred",
+    "connection": "Cannot connect to server",
+    "microphone": "Microphone permission required"
+  },
+  "broadcast": {
+    "dashboard": "Live Dashboard",
+    "queueStatus": "Queue Status",
+    "running": "Running",
+    "stopped": "Stopped",
+    "pending": "Pending",
+    "processing": "Processing",
+    "rate": "Rate",
+    "queueUsage": "Queue Usage",
+    "lastUpdated": "Updated",
+    "connectionError": "Connection Error",
+    "retry": "Retry",
+    "settings": "Settings",
+    "priorityRules": "Priority Rules",
+    "unsaved": "Unsaved",
+    "priorityMode": "Priority Mode",
+    "waitTime": "Wait Time",
+    "allowInterruption": "Allow Interruption",
+    "allowInterruptionDesc": "Allow interrupting ongoing conversations",
+    "superchatAlways": "Superchat Always Priority",
+    "superchatAlwaysDesc": "Always prioritize superchat messages",
+    "voiceActiveChatDelay": "Chat delay when voice active",
+    "chatActiveVoiceDelay": "Voice delay when chat active",
+    "platforms": "Platforms",
+    "chatMonitor": "Chat Monitor",
+    "chatMonitorDesc": "Enable live chat monitoring",
+    "youtubeApiKey": "API Key",
+    "youtubeChannelId": "Channel ID",
+    "chzzkChannelId": "Channel ID",
+    "chzzkClientId": "Client ID",
+    "chzzkClientSecret": "Client Secret",
+    "chzzkRedirectUri": "Redirect URI",
+    "oauthConnected": "OAuth Connected",
+    "oauthNotConnected": "OAuth Not Connected",
+    "connect": "Connect",
+    "reconnect": "Reconnect",
+    "advancedSettings": "Advanced Settings",
+    "maxRetries": "Max Retries",
+    "retryInterval": "Retry Interval (s)"
+  }
+}

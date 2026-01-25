@@ -1,0 +1,48 @@
+appId: com.openllmvtuber.app
+productName: Open-LLM-VTuber
+directories:
+  buildResources: resources
+  output: release/${version}
+files:
+  - 'dist/**/*'
+  - 'out/**/*'
+  - 'resources/**/*'
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+win:
+  executableName: Open-LLM-VTuber
+  icon: resources/icon.ico
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+  differentialPackage: false
+mac:
+  icon: resources/icon.icns
+  target:
+    - target: dmg
+      arch: [x64, arm64]
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    - NSCameraUsageDescription: Application requests access to the device's camera.
+    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+  notarize: false
+dmg:
+  artifactName: ${name}-${version}.${ext}
+  writeUpdateInfo: false
+linux:
+  target:
+    - AppImage
+    - deb
+  maintainer: Open-LLM-VTuber
+  category: Utility
+appImage:
+  artifactName: ${name}-${version}.${ext}
+npmRebuild: false

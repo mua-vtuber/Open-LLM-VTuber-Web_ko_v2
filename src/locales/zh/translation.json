@@ -1,0 +1,206 @@
+{
+  "app": {
+    "name": "Open-LLM-VTuber",
+    "version": "v2.0"
+  },
+  "modes": {
+    "studio": "工作室",
+    "studioDesc": "完整UI，用于设置和测试",
+    "live": "直播",
+    "liveDesc": "为OBS捕获优化的简约UI",
+    "companion": "伴侣",
+    "companionDesc": "桌面宠物风格的浮动窗口",
+    "companionActive": "伴侣模式已激活。拖动浮动窗口移动位置。"
+  },
+  "status": {
+    "idle": "待机中",
+    "listening": "聆听中...",
+    "thinking": "思考中...",
+    "speaking": "说话中..."
+  },
+  "controls": {
+    "microphone": "麦克风",
+    "stop": "停止",
+    "volume": "音量",
+    "send": "发送",
+    "settings": "设置",
+    "quickReaction": "快速反应"
+  },
+  "tools": {
+    "chat": "聊天",
+    "camera": "摄像头",
+    "screen": "屏幕",
+    "live": "直播",
+    "settings": "设置",
+    "chatPlaceholder": "聊天记录将在此显示",
+    "cameraPlaceholder": "连接您的摄像头",
+    "screenPlaceholder": "开始屏幕共享",
+    "livePlaceholder": "配置直播设置"
+  },
+  "settings": {
+    "title": "设置",
+    "search": "搜索设置...",
+    "profile": {
+      "title": "配置文件",
+      "description": "配置文件管理和导入/导出"
+    },
+    "character": {
+      "title": "角色",
+      "description": "模型、表情、动作、背景",
+      "model": "模型",
+      "selectModel": "选择模型",
+      "modelUrl": "模型URL（直接输入）",
+      "addModelFolder": "添加模型文件夹",
+      "externalFolders": "外部模型文件夹",
+      "external": "外部",
+      "loading": "加载中...",
+      "noModelsFound": "未找到模型",
+      "uploadModel": "上传模型",
+      "transform": "位置/大小",
+      "scale": "缩放",
+      "position": "位置",
+      "verticalPosition": "垂直位置",
+      "verticalPositionDesc": "调整角色的垂直位置",
+      "animation": "动画",
+      "lipSync": "口型同步",
+      "lipSyncDesc": "将嘴部动作与语音同步",
+      "eyeBlink": "眨眼",
+      "eyeBlinkDesc": "启用自动眨眼",
+      "autoBreathing": "自动呼吸",
+      "autoBreathingDesc": "自然的呼吸动画",
+      "idleMotion": "待机动作",
+      "idleMotionDesc": "待机时的自然动作",
+      "movement": "角色移动",
+      "movementMode": "移动模式",
+      "movementModeDesc": "角色在屏幕上自动移动的方式",
+      "movementModes": {
+        "disabled": "禁用",
+        "free": "自由移动",
+        "horizontal": "仅水平移动",
+        "vertical": "仅垂直移动"
+      },
+      "movementSpeed": "移动速度",
+      "movementSpeedDesc": "角色移动速度（越高越快）",
+      "movementActiveness": "活跃度",
+      "movementActivenessDesc": "越低休息越多，越高越活跃",
+      "seconds": "秒"
+    },
+    "voice": {
+      "title": "语音",
+      "description": "输入、输出",
+      "input": {
+        "title": "语音输入",
+        "enabled": "启用语音识别",
+        "sensitivity": "灵敏度",
+        "vad": "语音活动检测 (VAD)"
+      },
+      "output": {
+        "title": "语音输出",
+        "engine": "TTS引擎",
+        "voice": "声音",
+        "speed": "速度",
+        "pitch": "音调"
+      }
+    },
+    "ai": {
+      "title": "AI",
+      "description": "性格、记忆、反应规则",
+      "personality": "性格",
+      "systemPrompt": "系统提示",
+      "memory": "记忆功能",
+      "temperature": "创造力 (Temperature)"
+    },
+    "broadcast": {
+      "title": "直播",
+      "description": "平台连接、聊天过滤、优先级",
+      "platforms": {
+        "title": "平台连接",
+        "youtube": "YouTube",
+        "chzzk": "Chzzk",
+        "discord": "Discord"
+      },
+      "chatFilter": {
+        "title": "聊天过滤",
+        "enabled": "启用过滤",
+        "blockedWords": "屏蔽词"
+      },
+      "priority": {
+        "title": "优先级规则"
+      }
+    },
+    "system": {
+      "title": "系统",
+      "description": "连接、语言、主题、快捷键",
+      "language": "语言",
+      "theme": "主题",
+      "shortcuts": "快捷键",
+      "developer": "开发者模式"
+    },
+    "save": "保存",
+    "cancel": "取消",
+    "reset": "重置"
+  },
+  "connection": {
+    "connected": "已连接",
+    "disconnected": "已断开",
+    "connecting": "连接中...",
+    "error": "连接错误"
+  },
+  "chat": {
+    "toggle": "切换聊天",
+    "title": "聊天"
+  },
+  "mic": {
+    "enable": "开启麦克风",
+    "disable": "关闭麦克风"
+  },
+  "messages": {
+    "placeholder": "输入消息...",
+    "empty": "开始对话吧！"
+  },
+  "errors": {
+    "generic": "发生错误",
+    "connection": "无法连接到服务器",
+    "microphone": "需要麦克风权限"
+  },
+  "broadcast": {
+    "dashboard": "直播仪表板",
+    "queueStatus": "队列状态",
+    "running": "运行中",
+    "stopped": "已停止",
+    "pending": "等待中",
+    "processing": "处理中",
+    "rate": "处理速率",
+    "queueUsage": "队列使用率",
+    "lastUpdated": "更新时间",
+    "connectionError": "连接错误",
+    "retry": "重试",
+    "settings": "设置",
+    "priorityRules": "优先级规则",
+    "unsaved": "未保存",
+    "priorityMode": "优先级模式",
+    "waitTime": "等待时间",
+    "allowInterruption": "允许中断",
+    "allowInterruptionDesc": "允许中断正在进行的对话",
+    "superchatAlways": "超级留言始终优先",
+    "superchatAlwaysDesc": "超级留言始终优先处理",
+    "voiceActiveChatDelay": "语音活动时聊天延迟",
+    "chatActiveVoiceDelay": "聊天活动时语音延迟",
+    "platforms": "平台",
+    "chatMonitor": "聊天监控",
+    "chatMonitorDesc": "启用直播聊天监控",
+    "youtubeApiKey": "API密钥",
+    "youtubeChannelId": "频道ID",
+    "chzzkChannelId": "频道ID",
+    "chzzkClientId": "客户端ID",
+    "chzzkClientSecret": "客户端密钥",
+    "chzzkRedirectUri": "重定向URI",
+    "oauthConnected": "OAuth已连接",
+    "oauthNotConnected": "OAuth未连接",
+    "connect": "连接",
+    "reconnect": "重新连接",
+    "advancedSettings": "高级设置",
+    "maxRetries": "最大重试次数",
+    "retryInterval": "重试间隔（秒）"
+  }
+}

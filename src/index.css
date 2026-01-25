@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 전역 스타일 */
+@layer base {
+  * {
+    @apply box-border;
+  }
+
+  html, body, #root {
+    @apply h-full;
+  }
+
+  html {
+    @apply antialiased;
+  }
+
+  body {
+    @apply bg-background-primary text-text-primary font-sans;
+    margin: 0;
+    overflow: hidden;
+  }
+
+  /* 스크롤바 스타일 */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-background-secondary;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-text-muted rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-secondary;
+  }
+}
+
+/* 컴포넌트 스타일 */
+@layer components {
+  /* 버튼 기본 스타일 */
+  .btn {
+    @apply inline-flex items-center justify-center px-4 py-2 rounded-md font-medium transition-colors duration-fast;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent-primary focus:ring-offset-2 focus:ring-offset-background-primary;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent-primary text-white hover:bg-accent-primary/90;
+  }
+
+  .btn-secondary {
+    @apply btn bg-background-tertiary text-text-primary hover:bg-background-tertiary/80;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-text-secondary hover:bg-background-secondary hover:text-text-primary;
+  }
+
+  /* 입력 필드 스타일 */
+  .input {
+    @apply w-full px-3 py-2 bg-background-secondary border border-background-tertiary rounded-md;
+    @apply text-text-primary placeholder:text-text-muted;
+    @apply focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent;
+    @apply transition-colors duration-fast;
+  }
+
+  /* 카드 스타일 */
+  .card {
+    @apply bg-background-secondary rounded-lg p-4 shadow-md;
+  }
+
+  /* 말풍선 스타일 */
+  .speech-bubble {
+    @apply relative bg-white text-gray-900 rounded-2xl px-4 py-3 shadow-lg;
+    @apply max-w-[400px];
+  }
+
+  .speech-bubble::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid white;
+  }
+
+  /* 생각 말풍선 */
+  .thought-bubble {
+    @apply relative bg-blue-50 text-gray-900 rounded-2xl px-4 py-3 shadow-lg;
+    @apply max-w-[400px];
+  }
+
+  /* 상태 인디케이터 */
+  .status-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .status-idle {
+    @apply bg-status-idle;
+  }
+
+  .status-listening {
+    @apply bg-status-listening animate-pulse;
+  }
+
+  .status-thinking {
+    @apply bg-status-thinking animate-bounce-slow;
+  }
+
+  .status-speaking {
+    @apply bg-status-speaking animate-pulse-slow;
+  }
+}
+
+/* 유틸리티 스타일 */
+@layer utilities {
+  /* 그라데이션 텍스트 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-accent-primary to-purple-500 bg-clip-text text-transparent;
+  }
+
+  /* 글래스 효과 */
+  .glass {
+    @apply bg-background-secondary/80 backdrop-blur-md;
+  }
+
+  /* 접근성 - 화면 읽기 전용 */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}

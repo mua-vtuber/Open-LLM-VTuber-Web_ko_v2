@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import CONFIG from '../../config';
 import type {
   CharacterSettings,
   VoiceSettings,
@@ -153,8 +154,8 @@ export const initialSettingsState: SettingsState = {
     system: {
       language: 'ko',
       theme: 'dark',
-      websocketUrl: 'ws://localhost:12393/client-ws',
-      apiUrl: 'http://localhost:12393',
+      websocketUrl: CONFIG.wsUrl,
+      apiUrl: CONFIG.apiUrl,
       shortcuts: {
         toggleMicrophone: 'Ctrl+M',
         stopResponse: 'Escape',

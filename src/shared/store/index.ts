@@ -1,5 +1,6 @@
 import { create, type StateCreator } from 'zustand';
 import { persist, devtools, subscribeWithSelector } from 'zustand/middleware';
+import CONFIG from '../config';
 import type { CharacterSettings, VoiceSettings, AISettings, BroadcastSettings, SystemSettings, MovementState, Message, Emotion, ConversationStatus, WebSocketStatus } from '../types';
 import { isElectron, electronAPI } from '../utils/electron';
 import {
@@ -152,7 +153,7 @@ export const useAppStore = create<AppStore>()(
             if (version <= 1) {
               // v1 -> v2: WebSocket URL 수정 (/ws -> /client-ws)
               if (state?.settings?.system?.websocketUrl === 'ws://localhost:12393/ws') {
-                state.settings.system.websocketUrl = 'ws://localhost:12393/client-ws';
+                state.settings.system.websocketUrl = CONFIG.wsUrl;
               }
             }
 

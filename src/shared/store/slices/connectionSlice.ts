@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import CONFIG from '../../config';
 import type { WebSocketStatus, PlatformConnection } from '../../types';
 
 // ============================================================
@@ -31,7 +32,7 @@ export const initialConnectionState: ConnectionState = {
   connection: {
     websocket: {
       status: 'disconnected',
-      url: 'ws://localhost:12393/client-ws',
+      url: CONFIG.wsUrl,
       reconnectAttempts: 0,
     },
     platforms: [],

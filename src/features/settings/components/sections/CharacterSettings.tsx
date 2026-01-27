@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { FolderPlus, RefreshCw, X, Loader2, AlertCircle } from 'lucide-react';
+import CONFIG from '../../../../shared/config';
 import { useAppStore } from '../../../../shared/store';
 import { Button, Input, Switch, Slider, Select } from '../../../../shared/components';
 import type { MovementMode } from '../../../../shared/types';
@@ -45,7 +46,7 @@ export function CharacterSettings() {
       const protocol = url.protocol === 'wss:' ? 'https:' : 'http:';
       return `${protocol}//${url.host}`;
     } catch {
-      return 'http://localhost:12393';
+      return CONFIG.apiUrl;
     }
   })();
 

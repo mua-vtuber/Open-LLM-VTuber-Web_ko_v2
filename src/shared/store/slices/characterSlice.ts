@@ -1,4 +1,5 @@
 import type { StateCreator } from 'zustand';
+import CONFIG from '../../config';
 import type { CharacterConfig, MovementState } from '../../types';
 
 // ============================================================
@@ -36,8 +37,8 @@ export type CharacterSlice = CharacterState & CharacterActions;
 export const initialCharacterState: CharacterState = {
   character: {
     model: {
-      // 샘플 모델 (백엔드 서버에서 제공)
-      modelUrl: 'http://localhost:12393/live2d-models/shizuku/runtime/shizuku.model3.json',
+      // 기본 모델 (백엔드 서버에서 제공)
+      modelUrl: `${CONFIG.apiUrl}/live2d-models/shizuku/runtime/shizuku.model3.json`,
       modelName: 'shizuku',
       scale: 0.3,
       position: { x: 0, y: 0 },

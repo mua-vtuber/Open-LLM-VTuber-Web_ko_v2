@@ -102,40 +102,47 @@ export function useCharacterMovement(
   }, []);
 
   /**
-   * 랜덤 목표 위치 생성 (경계에서 패딩을 두어 부드럽게)
+   * 랜덤 목표 위치 생성 (현재 위치 기준 근거리 배회)
    */
   const generateRandomTarget = useCallback(
     (mode: MovementMode): { x: number; y: number } => {
       const current = currentPosition;
 
-      // 경계에서 20% 패딩을 줘서 부딪히는 느낌 감소
-      const paddingX = (bounds.maxX - bounds.minX) * 0.15;
-      const paddingY = (bounds.maxY - bounds.minY) * 0.15;
+      // 경계 패딩
+      const paddingX = (bounds.maxX - bounds.minX) * 0.1;
+      const paddingY = (bounds.maxY - bounds.minY) * 0.1;
 
       const safeMinX = bounds.minX + paddingX;
       const safeMaxX = bounds.maxX - paddingX;
       const safeMinY = bounds.minY + paddingY;
       const safeMaxY = bounds.maxY - paddingY;
 
+      // 한 번에 이동할 최대 거리 (px) - 자연스러운 배회 느낌
+      const MAX_STEP = 350; 
+
+      let targetX = current.x;
+      let targetY = current.y;
+
+      const randomOffset = () => (Math.random() - 0.5) * 2 * MAX_STEP;
+
       switch (mode) {
         case 'free':
-          return {
-            x: safeMinX + Math.random() * (safeMaxX - safeMinX),
-            y: safeMinY + Math.random() * (safeMaxY - safeMinY),
-          };
+          targetX += randomOffset();
+          targetY += randomOffset();
+          break;
         case 'horizontal':
-          return {
-            x: safeMinX + Math.random() * (safeMaxX - safeMinX),
-            y: current.y,
-          };
+          targetX += randomOffset();
+          break;
         case 'vertical':
-          return {
-            x: current.x,
-            y: safeMinY + Math.random() * (safeMaxY - safeMinY),
-          };
-        default:
-          return current;
+          targetY += randomOffset();
+          break;
       }
+
+      // 화면 밖으로 나가지 않도록 클램핑
+      return {
+        x: Math.max(safeMinX, Math.min(safeMaxX, targetX)),
+        y: Math.max(safeMinY, Math.min(safeMaxY, targetY)),
+      };
     },
     [bounds, currentPosition]
   );
@@ -160,21 +167,22 @@ export function useCharacterMovement(
     const deltaY = target.y - current.y;
     const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    if (distance > 0) {
+    if (distance > 10) { // 너무 짧은 거리는 이동 안 함
       // 방향 정규화 (-1 ~ 1)
       const directionX = deltaX / distance;
       const directionY = deltaY / distance;
 
-      // 기울기 강도: 이동 중에는 항상 명확하게 (0.7 ~ 1.0)
-      const intensity = 0.7 + speed * 0.15;
+      // 기울기 강도: 이동 중에는 항상 명확하게 (0.5 ~ 1.0)
+      const intensity = 0.5 + Math.min(speed, 2.0) * 0.2;
 
       // CSS transition 시간 계산: 거리 기반
-      // 기본 속도 80px/s, speed 1.0 → 80px/s, speed 2.0 → 160px/s
-      const baseSpeed = 80; // pixels per second
-      const actualSpeed = baseSpeed * speed;
+      // 기본 속도 60px/s (조금 더 천천히)
+      const baseSpeed = 60; 
+      const actualSpeed = baseSpeed * Math.max(0.1, speed); // speed가 0이면 멈추지 않게 최소값 처리
+      
       const transitionMs = (distance / actualSpeed) * 1000;
-      // 최소 1초, 최대 8초 제한
-      const clampedDuration = Math.max(1000, Math.min(8000, transitionMs));
+      // 최소 1.5초, 최대 10초 제한 (너무 빠르거나 느리지 않게)
+      const clampedDuration = Math.max(1500, Math.min(10000, transitionMs));
       const transitionSec = clampedDuration / 1000;
 
       // 이동 시작: store에 movement 상태 업데이트
@@ -194,18 +202,15 @@ export function useCharacterMovement(
       movementEndTimerRef.current = setTimeout(() => {
         updateMovementState({ isMoving: false });
         movementEndTimerRef.current = null;
-        // transition 완료 후 다음 이동 스케줄링 (부딪힘 방지)
+        // transition 완료 후 다음 이동 스케줄링
         scheduleNextMoveRef.current();
-      }, clampedDuration + 200); // 약간의 여유
+      }, clampedDuration + 100); // 100ms 버퍼
+    } else {
+      // 이동 거리가 너무 짧으면 바로 다음 스케줄링
+      scheduleNextMoveRef.current();
     }
 
     updateCharacterPosition(target.x, target.y);
-
-    // distance가 0이면 (이미 목적지에 있음) transition이 없으므로 바로 다음 스케줄링
-    if (distance === 0) {
-      scheduleNextMoveRef.current();
-    }
-    // distance > 0이면 위의 movementEndTimer에서 transition 완료 후 스케줄링
   }, [bounds, currentPosition, generateRandomTarget, updateCharacterPosition, updateMovementState]);
 
   // 함수 ref (순환 의존성 해결)
@@ -214,10 +219,6 @@ export function useCharacterMovement(
 
   /**
    * 휴식 후 다음 이동 스케줄링
-   * 활동성(activeness)에 따라 휴식 확률과 시간이 달라짐
-   * - activeness 0.1: 90% 휴식 확률, 5-15초 휴식
-   * - activeness 0.5: 50% 휴식 확률, 3-8초 휴식
-   * - activeness 1.0: 10% 휴식 확률, 1-3초 휴식
    */
   const scheduleNextMove = useCallback(() => {
     const { movementMode: mode, movementActiveness: activeness } = settingsRef.current;
@@ -231,16 +232,17 @@ export function useCharacterMovement(
       return;
     }
 
-    // 활동성에 따른 휴식 확률 (낮을수록 자주 쉼)
-    const restProbability = 1 - activeness; // 0.1 -> 0.9, 1.0 -> 0.0
+    // 활동성에 따른 휴식 확률 (activeness가 높을수록 덜 쉼)
+    // 0.1 -> 90% 휴식, 1.0 -> 10% 휴식
+    const restProbability = 1.0 - (activeness * 0.9);
     const shouldRest = Math.random() < restProbability;
 
     if (shouldRest) {
       isRestingRef.current = true;
-      // 활동성에 따른 휴식 시간 (낮을수록 오래 쉼)
-      const baseRest = 3000 + (1 - activeness) * 7000; // 3~10초 베이스
-      const randomRest = Math.random() * 5000; // 0~5초 랜덤
-      const restDuration = baseRest + randomRest;
+      // 휴식 시간: 기본 2초 + 랜덤 (활동성 낮을수록 길게)
+      // activeness 0.1 -> 최대 12초, 1.0 -> 최대 4초
+      const maxRest = 4000 + (1 - activeness) * 8000;
+      const restDuration = 2000 + Math.random() * maxRest;
 
       timeoutRef.current = setTimeout(() => {
         isRestingRef.current = false;
@@ -252,21 +254,18 @@ export function useCharacterMovement(
   }, []);
 
   /**
-   * 실제 이동 스케줄링
-   * 짧은 딜레이 후 moveToNextPosition 호출
-   * (다음 스케줄링은 moveToNextPosition 내부에서 transition 완료 후 호출됨)
+   * 실제 이동 스케줄링 (짧은 딜레이)
    */
   const scheduleMovement = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
 
-    // 짧은 랜덤 딜레이 (0.5~1.5초)
-    const delay = 500 + Math.random() * 1000;
+    // 반응성 향상을 위해 딜레이 단축 (0.1~0.5초)
+    const delay = 100 + Math.random() * 400;
 
     timeoutRef.current = setTimeout(() => {
       moveToNextPosition();
-      // scheduleNextMove는 moveToNextPosition 내부에서 transition 완료 후 호출됨
     }, delay);
   }, [moveToNextPosition]);
 
@@ -302,7 +301,6 @@ export function useCharacterMovement(
       clearTimeout(movementEndTimerRef.current);
       movementEndTimerRef.current = null;
     }
-    // 이동 상태 초기화
     updateMovementState({
       isMoving: false,
       intensity: 0,
@@ -319,51 +317,42 @@ export function useCharacterMovement(
     }
   }, []);
 
-  // 움직임 모드 변경 시 처리 (컴패니언 모드에서만 활성화)
+  // 움직임 모드 변경 시 처리
   useEffect(() => {
     if (!externalEnabled || !isCompanionMode || movementMode === 'disabled') {
       stop();
       return;
     }
 
-    // 새 모드로 이동 시작 (초기 딜레이)
+    // 모드가 바뀌면 기존 이동을 취소하고 새로 시작
     isPausedRef.current = false;
     isRestingRef.current = false;
+    
+    // 즉시 반응
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (movementEndTimerRef.current) clearTimeout(movementEndTimerRef.current);
 
-    timeoutRef.current = setTimeout(() => {
-      moveToNextPosition();
-      // scheduleNextMove는 moveToNextPosition 내부에서 transition 완료 후 호출됨
-    }, 1500 + Math.random() * 1000);
+    scheduleMovement(); 
 
     return () => {
       stop();
     };
-  }, [movementMode, externalEnabled, isCompanionMode, stop, moveToNextPosition]);
+  }, [movementMode, externalEnabled, isCompanionMode, stop, scheduleMovement]);
 
-  // 설정 변경 시 타이머 재시작 (속도, 활동성)
+  // 설정(속도, 활동성) 변경 시 처리
   useEffect(() => {
-    // 비활성 상태면 무시
-    if (!externalEnabled || !isCompanionMode || movementMode === 'disabled') {
-      return;
-    }
+    if (!externalEnabled || !isCompanionMode || movementMode === 'disabled') return;
+    if (isPausedRef.current) return;
 
-    // 일시정지 상태면 무시
-    if (isPausedRef.current) {
-      return;
-    }
+    // 중요: 이미 이동 중이라면(transition 중) 간섭하지 않음 -> 자연스러운 연결
+    if (movementEndTimerRef.current) return;
 
-    // 현재 타이머 취소
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-      timeoutRef.current = null;
-    }
-
-    // 새 설정으로 다음 이동 스케줄링 (짧은 딜레이 후)
-    timeoutRef.current = setTimeout(() => {
+    // 휴식 중이었다면 휴식을 깨고 즉시 새로운 설정 적용
+    if (isRestingRef.current || timeoutRef.current) {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      isRestingRef.current = false;
       scheduleNextMoveRef.current();
-    }, 500);
-
-    // 의존성: 설정값들 (movementMode 제외 - 위 useEffect에서 처리)
+    }
   }, [movementSpeed, movementActiveness, externalEnabled, isCompanionMode, movementMode]);
 
   // 컴포넌트 언마운트 시 정리

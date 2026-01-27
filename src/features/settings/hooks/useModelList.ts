@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import CONFIG from '../../../shared/config';
 import { useAppStore } from '../../../shared/store';
 
 const STORAGE_KEY = 'open-llm-vtuber-external-model-folders';
@@ -52,8 +53,8 @@ interface UseModelListReturn {
 }
 
 /**
- * WebSocket URL에서 HTTP base URL 추출
- * ws://localhost:12393/client-ws -> http://localhost:12393
+ * WebSocket URL을 기반으로 HTTP base URL 추출
+ * (현재는 CONFIG.apiUrl 사용으로 대체됨)
  */
 function getHttpBaseUrl(wsUrl: string): string {
   try {
@@ -61,8 +62,7 @@ function getHttpBaseUrl(wsUrl: string): string {
     const protocol = url.protocol === 'wss:' ? 'https:' : 'http:';
     return `${protocol}//${url.host}`;
   } catch {
-    // 기본값 반환
-    return 'http://localhost:12393';
+    return CONFIG.apiUrl;
   }
 }
 

@@ -3,6 +3,8 @@
  * REST API 호출 함수들
  */
 
+import CONFIG from '../../../shared/config';
+import { useAppStore } from '../../../shared/store';
 import type {
   QueueStatus,
   QueueHistory,
@@ -12,19 +14,11 @@ import type {
   LiveConfigUpdate,
 } from '../types';
 
-// API Base URL - Store에서 가져오거나 기본값 사용
+// API Base URL - Store 상태에서 실시간으로 조회
 const getBaseUrl = () => {
-  try {
-    const stored = localStorage.getItem('open-llm-vtuber-storage');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      return parsed.state?.settings?.system?.apiUrl || 'http://localhost:12393';
-    }
-  } catch {
-    // ignore
-  }
-  return 'http://localhost:12393';
+  return useAppStore.getState().settings.system.apiUrl || CONFIG.apiUrl;
 };
+
 
 // ============================================================
 // Queue API

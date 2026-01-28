@@ -280,3 +280,18 @@ export interface ConnectionState {
 export type DeepPartial<T> = {
   [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
+
+// ============================================================
+// Priority Rules Types
+// ============================================================
+
+export type {
+  PriorityMode,
+  PriorityRulesData,
+} from './priority-rules';
+
+export {
+  PRIORITY_MODE_OPTIONS,
+  PRIORITY_VALIDATION_RULES,
+  DEFAULT_PRIORITY_RULES,
+} from './priority-rules';

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
-import { X, User, Palette, Mic, Bot, Brain, Radio, Settings as SettingsIcon, ChevronRight } from 'lucide-react';
+import { X, User, Palette, Mic, Bot, Brain, Radio, Settings as SettingsIcon, ChevronRight, ListOrdered } from 'lucide-react';
 import { useAppStore } from '../../../shared/store';
 import { cn, isElectron, companionMouse } from '../../../shared/utils';
 import { Button, Toast } from '../../../shared/components';
@@ -13,8 +13,9 @@ import {
   MemorySettings,
   BroadcastSettings,
   SystemSettings,
+  PrioritySettings,
 } from './sections';
-import { useConfigSync } from '../hooks';
+import { useConfigSync, usePriorityRules } from '../hooks';
 
 interface SettingsSectionProps {
   id: string;
@@ -57,11 +58,35 @@ export function SettingsModal() {
   const mode = useAppStore((state) => state.ui.mode);
 
   // 설정 동기화 훅
-  const { isSaving, error, success, saveAllSettings, clearError, clearSuccess } = useConfigSync();
+  const { isSaving: isConfigSaving, error: configError, success: configSuccess, saveAllSettings, clearError: clearConfigError, clearSuccess: clearConfigSuccess } = useConfigSync();
+
+  // 우선순위 규칙 훅
+  const { isSaving: isPrioritySaving, error: priorityError, success: prioritySuccess, saveRules: savePriorityRules, clearError: clearPriorityError, clearSuccess: clearPrioritySuccess, hasChanges: hasPriorityChanges } = usePriorityRules();
+
+  // 통합 상태
+  const isSaving = isConfigSaving || isPrioritySaving;
+  const error = configError || priorityError;
+  const success = configSuccess || prioritySuccess;
+
+  const clearError = () => {
+    clearConfigError();
+    clearPriorityError();
+  };
+
+  const clearSuccess = () => {
+    clearConfigSuccess();
+    clearPrioritySuccess();
+  };
 
   // 저장 핸들러
   const handleSave = async () => {
+    // AI 설정 저장
     await saveAllSettings();
+
+    // 우선순위 규칙에 변경사항이 있으면 저장
+    if (hasPriorityChanges) {
+      await savePriorityRules();
+    }
   };
 
   // Companion 모드에서 모달이 열려있는 동안 항상 hover 상태 유지
@@ -111,6 +136,12 @@ export function SettingsModal() {
       icon: <Radio className="w-5 h-5" />,
       title: t('settings.broadcast.title'),
       description: t('settings.broadcast.description'),
+    },
+    {
+      id: 'priority',
+      icon: <ListOrdered className="w-5 h-5" />,
+      title: t('settings.priority.title', 'Priority Rules'),
+      description: t('settings.priority.description', 'Chat and voice input priority settings'),
     },
     {
       id: 'system',
@@ -174,6 +205,7 @@ export function SettingsModal() {
                 {section === 'ai' && <AISettings />}
                 {section === 'memory' && <MemorySettings />}
                 {section === 'broadcast' && <BroadcastSettings />}
+                {section === 'priority' && <PrioritySettings />}
                 {section === 'system' && <SystemSettings />}
               </div>
             )}

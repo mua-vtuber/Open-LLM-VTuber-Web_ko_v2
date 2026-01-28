@@ -132,3 +132,67 @@ export interface ChatMessage {
   avatarUrl?: string;
   badges?: string[];
 }
+
+// ============================================================
+// Queue Monitoring Types
+// ============================================================
+
+/**
+ * Priority distribution in the queue
+ */
+export interface PriorityDistribution {
+  high: number;
+  normal: number;
+  low: number;
+}
+
+/**
+ * Snapshot of queue metrics at a point in time
+ */
+export interface MetricSnapshot {
+  timestamp: number;
+  queue_size: number;
+  queue_max: number;
+  processing_rate: number;
+  avg_wait_time: number;
+  priority_distribution: PriorityDistribution;
+}
+
+/**
+ * Queue alert types
+ */
+export type QueueAlertType = 'overflow' | 'slow_processing' | 'connection_lost';
+
+/**
+ * Alert severity levels
+ */
+export type AlertSeverity = 'warning' | 'error' | 'critical';
+
+/**
+ * Queue alert notification
+ */
+export interface QueueAlert {
+  id: string;
+  timestamp: number;
+  type: QueueAlertType;
+  message: string;
+  severity: AlertSeverity;
+  acknowledged: boolean;
+}
+
+/**
+ * Connection status for queue monitoring
+ */
+export type QueueConnectionStatus = 'connected' | 'disconnected' | 'connecting';
+
+/**
+ * Queue monitor state
+ */
+export interface QueueMonitorState {
+  currentMetric: MetricSnapshot | null;
+  history: MetricSnapshot[];
+  alerts: QueueAlert[];
+  connectionStatus: QueueConnectionStatus;
+  lastUpdated: number | null;
+  error: string | null;
+}

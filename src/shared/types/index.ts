@@ -295,3 +295,17 @@ export {
   PRIORITY_VALIDATION_RULES,
   DEFAULT_PRIORITY_RULES,
 } from './priority-rules';
+
+// ============================================================
+// WebSocket Message Types
+// ============================================================
+
+export {
+  BroadcastMessageType,
+  PriorityRulesMessageType,
+} from './websocket-messages';
+
+export type {
+  BroadcastMessageTypeValue,
+  PriorityRulesMessageTypeValue,
+} from './websocket-messages';
